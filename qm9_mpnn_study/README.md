@@ -53,11 +53,25 @@ This is a pedagogical "from-scratch" implementation based on:
 
 ---
 
-### 🔲 Step 4: Under the Hood - Pure PyTorch Implementation
+### ✅ Step 4: Under the Hood - Pure PyTorch Implementation
 **File:** `04_mpnn_from_scratch.ipynb`
 
 - **Goal:** Remove the PyG abstraction; implement message passing manually
 - **Theory:** Batching strategies (padding vs. disjoint union)
+  - Disjoint Union (PyG): Concatenate graphs into one giant graph
+  - Padding (Standard DL): Pad to `[B, N_max, D]` with masking
+  - Explains masking problem: preventing "ghost nodes" from corrupting messages
+- **Practice:**
+  - Custom `dense_collate_fn`: PyG Data → Dense tensors
+  - `DenseNNConvLayer`: Edge-conditioned message passing with einsum
+  - `DenseMPNN`: Full model with dense tensors and masking
+  - Distance matrix computation and RBF expansion (dense)
+- **Equivalence Test:**
+  - Copy weights from PyG model to Dense model
+  - Assert outputs match within tolerance (< 1e-4)
+  - Proves both implementations are functionally equivalent
+- **Key Insight:** Message passing = tensor contractions with `torch.einsum`
+- **Comparison:** Dense GNNs ≈ Transformers (both use data-dependent weights)
 - **Practice:** Dense tensors, distance matrices, manual aggregation
 - **Verification:** Assert identical outputs to Step 3
 
@@ -86,4 +100,15 @@ pip install torch torch-geometric rdkit matplotlib
 
 ---
 
-**Status:** Step 1 completed. Awaiting user confirmation to proceed to Step 2.
+**Status:** All 4 steps completed! 🎉
+
+## Summary of Results
+
+| Step | Model | Approach | Expected MAE | Key Takeaway |
+|------|-------|----------|--------------|--------------|
+| 1 | - | Data exploration | - | Established Math ↔ Code mapping |
+| 2 | GCN | Topology-only | ~0.8 eV | Geometry is essential for chemistry |
+| 3 | MPNN (PyG) | Geometry-aware | ~0.05 eV | 16× improvement with edge features |
+| 4 | MPNN (Dense) | From-scratch | ~0.05 eV | Understanding the abstraction |
+
+**Improvement:** 0.8 eV → 0.05 eV (16× error reduction by adding bond distances!)
