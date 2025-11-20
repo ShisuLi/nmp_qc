@@ -36,13 +36,20 @@ This is a pedagogical "from-scratch" implementation based on:
 
 ---
 
-### 🔲 Step 3: The Gilmer Model - Continuous Filter Convolution
+### ✅ Step 3: The Gilmer Model - Continuous Filter Convolution
 **File:** `03_geometry_mpnn_pyg.ipynb`
 
-- **Theory:** Edge-Conditioned Convolution (NNConv) - dynamic weight generation
+- **Theory:** Edge-Conditioned Convolution (NNConv) - Continuous Filter concept
+  - LaTeX: $\mathbf{h}_i^{(l+1)} = \mathbf{h}_i^{(l)} + \sum_{j} \text{MLP}(e_{ij}) \cdot \mathbf{h}_j^{(l)}$
+  - Explains why RBF expansion helps (smooth distance encoding)
+  - Contrast with GCN: Dynamic vs. static weight matrices
 - **Practice:** Implement using `torch_geometric.nn.NNConv`
-- **Key Detail:** MLP maps edge distances → weight matrices
-- **Expected Result:** Massive error reduction (~0.05 eV MAE)
+  - Edge network: MLP maps RBF features → weight matrices
+  - GRU updates for stable training
+  - Set2Set attention-based readout
+- **Training:** Same hyperparameters as Step 2 for fair comparison
+- **Visualization:** Direct GCN vs MPNN comparison plots
+- **Expected Result:** Massive error reduction (16× improvement: 0.8 eV → 0.05 eV MAE)
 
 ---
 
