@@ -22,13 +22,17 @@ This is a pedagogical "from-scratch" implementation based on:
 
 ---
 
-### 🔲 Step 2: The Baseline - Topological GCN
+### ✅ Step 2: The Baseline - Topological GCN
 **File:** `02_topology_gcn.ipynb`
 
 - **Hypothesis:** "Chemistry requires geometry. Topology alone will fail."
 - **Theory:** Graph Convolutional Networks (GCN) - Kipf & Welling
+  - LaTeX: $\mathbf{h}_i^{(l+1)} = \sigma(\sum_{j \in \mathcal{N}(i)} \frac{1}{\sqrt{\deg(i)\deg(j)}} \mathbf{W} \mathbf{h}_j^{(l)})$
+  - Critical Analysis: Missing $e_{vw}$ (edge features) compared to MPNN
 - **Practice:** Implement using `torch_geometric.nn.GCNConv`
-- **Expected Result:** High error (~1+ eV for HOMO-LUMO gap)
+- **Training:** Full training loop with MSE loss, validation, and test evaluation
+- **Visualization:** Loss curves + Prediction vs Ground Truth scatter plot
+- **Expected Result:** High error (~0.5-1.0 eV MAE for HOMO-LUMO gap)
 
 ---
 
